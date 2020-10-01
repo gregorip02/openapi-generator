@@ -2,7 +2,7 @@
 
 namespace OpenapiGenerator;
 
-class OpenapiGenerator
+final class OpenapiGenerator
 {
     // Build your next great package.
 }

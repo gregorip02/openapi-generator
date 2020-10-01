@@ -2,6 +2,8 @@
 
 All notable changes to `openapi-generator` will be documented in this file
 
-## 1.0.0 - 201X-XX-XX
+## 0.0.1 2020-10-01
 
 - initial release
+- adds testing directories
+- configure phpunit ^9.0

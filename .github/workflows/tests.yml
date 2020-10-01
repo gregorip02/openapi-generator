@@ -15,7 +15,7 @@ jobs:
 
         name: PHP${{ matrix.php }} on ${{ matrix.os }}
         container:
-            image: lorisleiva/laravel-docker:${{ matrix.php }}
+            image: composer:2.0.0-alpha3
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
