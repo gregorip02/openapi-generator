@@ -1,10 +1,10 @@
 <?php
 
-namespace OpenapiGenerator;
+namespace OpenapiGenerator\Tests;
 
 use Illuminate\Support\ServiceProvider;
 
-final class OpenapiGeneratorServiceProvider extends ServiceProvider
+class TestProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -13,9 +13,11 @@ final class OpenapiGeneratorServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('openapi-generator.php'),
+                __DIR__ . '/app/config.php' => config_path('openapi-generator.php'),
             ], 'config');
         }
+
+        $this->loadRoutesFrom(__DIR__ . '/app/routes.php');
     }
 
     /**
@@ -23,6 +25,6 @@ final class OpenapiGeneratorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'openapi-generator');
+        $this->mergeConfigFrom(__DIR__ . '/app/config.php', 'openapi-generator');
     }
 }
