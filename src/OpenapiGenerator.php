@@ -176,7 +176,7 @@ final class OpenapiGenerator
      */
     public function parameters(string $uri): array
     {
-        preg_match_all('/\{[a-zA-Z-]*\}/i', $uri, $matches);
+        preg_match_all('/\{[a-zA-Z-_]*\}/i', $uri, $matches);
 
         $matches = \Illuminate\Support\Arr::flatten($matches);
 
