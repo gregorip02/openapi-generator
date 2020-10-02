@@ -5,6 +5,7 @@ namespace OpenapiGenerator;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 final class OpenapiGenerator
 {
@@ -97,6 +98,38 @@ final class OpenapiGenerator
         return $paths;
     }
 
+    public function response(OpenapiBuilder &$builder, Route $route): void
+    {
+        if ($route->getActionName() == 'Closure') {
+            return;
+        }
+
+        $method = $route->getActionMethod();
+
+        $controller = $route->getController();
+
+        if (method_exists($controller, $method)) {
+            $ctlReflection = (new ReflectionClass($controller))->getMethod($method);
+
+            if ($classname = optional($ctlReflection->getReturnType())->getName()) {
+                $resReflection = new ReflectionClass($classname);
+
+                /** Determine if the response is a ResourceCollection */
+                if (Str::endsWith($resReflection->getName(), 'Collection')) {
+                    $defaultCollectionProperties = $resReflection->getDefaultProperties();
+
+                    if (class_exists($defaultCollectionProperties['collects'])) {
+                        $resReflection = new ReflectionClass(
+                            $defaultCollectionProperties['collects']
+                        );
+                    }
+                }
+
+                /** We only support JsonResources for response generation */
+            }
+        }
+    }
+
     /**
      * Create a new instance of the Openapi builder.
      *
@@ -108,7 +141,7 @@ final class OpenapiGenerator
         return (new OpenapiBuilder($route))
             ->description('Hello world')
             ->response(200, [
-                'description' => 'All good!'
+                'description' => 'Work in progress'
             ]);
     }
 

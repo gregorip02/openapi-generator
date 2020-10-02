@@ -3,6 +3,8 @@
 namespace OpenapiGenerator\Tests\App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use OpenapiGenerator\Tests\App\Http\Resources\PetResourceCollection;
+use OpenapiGenerator\Tests\App\Models\Pet;
 
 class PetController extends Controller
 {
@@ -10,11 +12,13 @@ class PetController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return [type]           [description]
+     * @return \OpenapiGenerator\Tests\App\Http\Resources\PetResourceCollection
      */
-    public function index(Request $request)
+    public function index(Request $request): PetResourceCollection
     {
-        return 'Hello world!';
+        $pets = Pet::all();
+
+        return PetResourceCollection::make($pets);
     }
 }
 
