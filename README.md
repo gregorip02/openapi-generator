@@ -1,9 +1,10 @@
 # Laravel OpenAPI Generator 📦
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/gregorip02/openapi-generator.svg?style=flat-square)](https://packagist.org/packages/gregorip02/openapi-generator)
-[![Build Status](https://img.shields.io/travis/gregorip02/openapi-generator/master.svg?style=flat-square)](https://travis-ci.org/gregorip02/openapi-generator)
-[![Quality Score](https://img.shields.io/scrutinizer/g/gregorip02/openapi-generator.svg?style=flat-square)](https://scrutinizer-ci.com/g/gregorip02/openapi-generator)
-[![Total Downloads](https://img.shields.io/packagist/dt/gregorip02/openapi-generator.svg?style=flat-square)](https://packagist.org/packages/gregorip02/openapi-generator)
+[![Latest Stable Version](https://poser.pugx.org/phpunit/phpunit/v)](//packagist.org/packages/phpunit/phpunit)
+[![Total Downloads](https://poser.pugx.org/phpunit/phpunit/downloads)](//packagist.org/packages/phpunit/phpunit)
+[![Latest Unstable Version](https://poser.pugx.org/phpunit/phpunit/v/unstable)](//packagist.org/packages/phpunit/phpunit)
+[![License](https://poser.pugx.org/phpunit/phpunit/license)](//packagist.org/packages/phpunit/phpunit)
+[![Actions Status](https://github.com/gregorip02/openapi-generator/workflows/tests/badge.svg)](https://github.com/gregorip02/openapi-generator/actions)
 
 This package helps you with the automatic generation of the file with the .yml extension that contains the OpenAPI specification of your registered routes.
 
