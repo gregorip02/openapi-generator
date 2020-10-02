@@ -4,7 +4,7 @@ namespace OpenapiGenerator;
 
 use Illuminate\Support\ServiceProvider;
 
-final class OpenapiGeneratorServiceProvider extends ServiceProvider
+class OpenapiGeneratorServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -24,5 +24,9 @@ final class OpenapiGeneratorServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'openapi-generator');
+
+        $this->commands([
+            OpenapiGeneratorCommand::class
+        ]);
     }
 }

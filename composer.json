@@ -31,9 +31,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "OpenapiGenerator\\Tests\\": "tests",
-            "OpenapiGenerator\\Tests\\Src\\": "tests/src",
-            "OpenapiGenerator\\Tests\\App\\": "tests/app"
+            "OpenapiGenerator\\Tests\\": "tests/",
+            "OpenapiGenerator\\Tests\\Src\\": "tests/src/",
+            "OpenapiGenerator\\Tests\\App\\": "tests/laravel/app/"
         }
     },
     "scripts": {

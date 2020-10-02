@@ -1,1 +1,0 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":237:{a:2:{s:7:"defects";a:1:{s:52:"OpenapiGenerator\Tests\Src\ExampleTest::true_is_true";i:4;}s:5:"times";a:2:{s:45:"OpenapiGenerator\Tests\TestCase::true_is_true";d:0.267;s:52:"OpenapiGenerator\Tests\Src\ExampleTest::true_is_true";d:0.223;}}}

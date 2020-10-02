@@ -26,8 +26,12 @@ return [
         'servers' => [
             [
                 'url' => 'http://api.petstore.com/',
-                'description' => 'Production server'
+                'description' => 'Pet store production server'
             ],
+            [
+                'url' => 'http://dev.petstore.com/',
+                'description' => 'Pet store development server'
+            ]
         ],
         /**
          * @required
@@ -41,7 +45,7 @@ return [
              * @required
              * The title of the API.
              */
-            'title' => 'My awesome petstore api',
+            'title' => 'Sample Pet Store App',
             /**
              * @required
              * The version of the OpenAPI document (which is distinct from the

@@ -12,4 +12,14 @@ class TestCase extends BaseTestCase
             TestProvider::class
         ];
     }
+
+    /**
+     * Get base path.
+     *
+     * @return string
+     */
+    protected function getBasePath()
+    {
+        return __DIR__ . '/laravel';
+    }
 }
