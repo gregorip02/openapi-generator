@@ -1,9 +1,8 @@
 # Laravel OpenAPI Generator 📦
 
-[![Latest Stable Version](https://poser.pugx.org/phpunit/phpunit/v)](//packagist.org/packages/phpunit/phpunit)
-[![Total Downloads](https://poser.pugx.org/phpunit/phpunit/downloads)](//packagist.org/packages/phpunit/phpunit)
-[![Latest Unstable Version](https://poser.pugx.org/phpunit/phpunit/v/unstable)](//packagist.org/packages/phpunit/phpunit)
-[![License](https://poser.pugx.org/phpunit/phpunit/license)](//packagist.org/packages/phpunit/phpunit)
+[![Latest Stable Version](https://poser.pugx.org/gregorip02/openapi-generator/v)](//packagist.org/packages/gregorip02/openapi-generator)
+[![License](https://poser.pugx.org/gregorip02/openapi-generator/license)](//packagist.org/packages/gregorip02/openapi-generator)
+[![Total Downloads](https://poser.pugx.org/gregorip02/openapi-generator/downloads)](//packagist.org/packages/gregorip02/openapi-generator)
 [![Actions Status](https://github.com/gregorip02/openapi-generator/workflows/tests/badge.svg)](https://github.com/gregorip02/openapi-generator/actions)
 
 This package helps you with the automatic generation of the file with the .yml extension that contains the OpenAPI specification of your registered routes.
