@@ -2,22 +2,19 @@
 
 namespace OpenapiGenerator\Tests;
 
-use Illuminate\Support\ServiceProvider;
+use OpenapiGenerator\OpenapiGeneratorCommand;
+use OpenapiGenerator\OpenapiGeneratorServiceProvider;
 
-class TestProvider extends ServiceProvider
+class TestProvider extends OpenapiGeneratorServiceProvider
 {
     /**
      * Bootstrap the application services.
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/app/config.php' => config_path('openapi-generator.php'),
-            ], 'config');
-        }
+        parent::boot();
 
-        $this->loadRoutesFrom(__DIR__ . '/app/routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/laravel/routes.php');
     }
 
     /**
@@ -25,6 +22,10 @@ class TestProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/app/config.php', 'openapi-generator');
+        $this->mergeConfigFrom(__DIR__.'/laravel/config.php', 'openapi-generator');
+
+        $this->commands([
+            OpenapiGeneratorCommand::class
+        ]);
     }
 }

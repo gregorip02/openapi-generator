@@ -10,3 +10,6 @@
 /.scrutinizer.yml   export-ignore
 /tests              export-ignore
 /.editorconfig      export-ignore
+/CHANGELOG.md       export-ignore
+/CONTRIBUTING.md    export-ignore
+/LICENSE.md         export-ignore
