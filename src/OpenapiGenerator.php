@@ -5,7 +5,7 @@ namespace OpenapiGenerator;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
-use ReflectionClass;
+// use ReflectionClass;
 
 final class OpenapiGenerator
 {
@@ -59,8 +59,9 @@ final class OpenapiGenerator
     }
 
     /**
-     * [contents description]
-     * @return [type] [description]
+     * Combine template with route paths.
+     *
+     * @return array
      */
     public function contents(): array
     {
@@ -69,6 +70,11 @@ final class OpenapiGenerator
         return array_merge($this->template, $paths);
     }
 
+    /**
+     * Route path generation.
+     *
+     * @return array
+     */
     public function paths(): array
     {
         $routeCollection = $this->router->getRoutes();
@@ -82,13 +88,12 @@ final class OpenapiGenerator
 
                 $builder = $this->createBuilder($route);
 
-                if ($parameters = $this->parameters($route)) {
+                $uri = '/' . Str::of($route->uri)->ltrim('/');
+
+                if ($parameters = $this->parameters($uri)) {
                     $builder->parameters($parameters);
                 }
 
-                $uri = '/' . Str::of($route->uri)->ltrim('/');
-
-                // Add tag name...
                 if ($tagname = preg_replace('/^\/api\//', '', $uri)) {
                     $builder->tag($tagname);
                 }
@@ -118,7 +123,7 @@ final class OpenapiGenerator
         return count($passess);
     }
 
-
+    /**
     public function response(OpenapiBuilder &$builder, Route $route): void
     {
         if ($route->getActionName() == 'Closure') {
@@ -135,7 +140,6 @@ final class OpenapiGenerator
             if ($classname = optional($ctlReflection->getReturnType())->getName()) {
                 $resReflection = new ReflectionClass($classname);
 
-                /** Determine if the response is a ResourceCollection */
                 if (Str::endsWith($resReflection->getName(), 'Collection')) {
                     $defaultCollectionProperties = $resReflection->getDefaultProperties();
 
@@ -145,11 +149,9 @@ final class OpenapiGenerator
                         );
                     }
                 }
-
-                /** We only support JsonResources for response generation */
             }
         }
-    }
+    } **/
 
     /**
      * Create a new instance of the Openapi builder.
@@ -169,16 +171,19 @@ final class OpenapiGenerator
     /**
      * Get uri parameters
      *
-     * @param  \Illuminate\Routing\Route $route
+     * @param  string $uri
      * @return array
      */
-    public function parameters(Route $route): array
+    public function parameters(string $uri): array
     {
-        $uri = $route->uri;
+        preg_match_all('/\{[a-zA-Z-_]*\}/i', $uri, $matches);
 
-        $params = preg_replace('/(\/?(\w+(\/|$))|(\{|\/$))/i', '', $uri);
+        $matches = \Illuminate\Support\Arr::flatten($matches);
 
-        return array_filter(explode('}', $params));
+        return array_map(
+            fn ($match) => preg_replace('/\{|\}/i', '', $match),
+            $matches
+        );
     }
 
     /**
