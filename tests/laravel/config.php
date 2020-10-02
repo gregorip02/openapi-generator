@@ -3,6 +3,10 @@
 return [
     'outputpath' => resource_path('openapi.yml'),
 
+    'wildcards' => [
+        '/^\/?api\/*/'
+    ],
+
     'template' => [
         /**
          * @required
