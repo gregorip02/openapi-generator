@@ -18,7 +18,6 @@
     ],
     "require": {
         "php": "^7.3",
-        "ext-yaml": "*",
         "illuminate/support": "^8.0"
     },
     "require-dev": {

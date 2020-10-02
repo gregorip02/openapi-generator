@@ -44,7 +44,7 @@ final class OpenapiGeneratorCommand extends Command
 
         $template = $configuration->get('template');
 
-        $content = yaml_emit(OpenapiGenerator::make($template, $this->router));
+        $content = Yaml::dump(OpenapiGenerator::make($template, $this->router));
 
         $outputpath = $this->putContents($content, $configuration);
 

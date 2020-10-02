@@ -20,9 +20,6 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: Install yaml extension
-              run: pecl install yaml
-
             - name: Validate composer files
               run: composer validate
 
