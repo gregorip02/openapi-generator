@@ -1,8 +1,26 @@
 <?php
 
 return [
+    /**
+     * The output directory where your YAML document will be created.
+     */
     'outputpath' => resource_path('openapi.yml'),
 
+    /**
+     * Wildcards allow you to document a specific group of routes without having
+     * to expose everything to your YAML file.
+     */
+    'wildcards' => [
+        '/^\/?api\/*/'
+    ],
+
+    /**
+     * The base skeleton with the default OpenAPI specification that will include
+     * your final document, do not refrain from adding more attributes or removing
+     * optional attributes that you do not consider important.
+     *
+     * @see https://swagger.io/specification/#schema
+     */
     'template' => [
         /**
          * @required

@@ -76,27 +76,48 @@ final class OpenapiGenerator
         $paths = ['paths' => []];
 
         /** @var \Illuminate\Routing\Route $route **/
-        foreach ($routeCollection->getRoutes() as $route) {
-            $method = $this->method($route);
+        foreach ($routeCollection->getRoutesByName() as $route) {
+            if ($this->wildcard($route->uri)) {
+                $method = $this->method($route);
 
-            $builder = $this->createBuilder($route);
+                $builder = $this->createBuilder($route);
 
-            if ($parameters = $this->parameters($route)) {
-                $builder->parameters($parameters);
+                if ($parameters = $this->parameters($route)) {
+                    $builder->parameters($parameters);
+                }
+
+                $uri = '/' . Str::of($route->uri)->ltrim('/');
+
+                // Add tag name...
+                if ($tagname = preg_replace('/^\/api\//', '', $uri)) {
+                    $builder->tag($tagname);
+                }
+
+                $paths['paths'][$uri][$method] = $builder->toArray();
             }
-
-            if (Str::startsWith('/', $route->uri)) {
-                $uri = $route->uri;
-            } else {
-                $uri = '/' . $route->uri;
-                $builder->tag($route->uri);
-            }
-
-            $paths['paths'][$uri][$method] = $builder->toArray();
         }
 
         return $paths;
     }
+
+    /**
+     * Check that the current URI passes the wildcard.
+     *
+     * @param  string $uri
+     * @return boolean
+     */
+    protected function wildcard(string $uri): bool
+    {
+        $wildcards = config('openapi-generator.wildcards', []);
+
+        $passess = array_filter(
+            $wildcards,
+            fn ($wildcard) => preg_match($wildcard, $uri)
+        );
+
+        return count($passess);
+    }
+
 
     public function response(OpenapiBuilder &$builder, Route $route): void
     {
