@@ -3,6 +3,7 @@
 namespace OpenapiGenerator;
 
 use Illuminate\Support\Collection;
+use Illuminate\Routing\Route;
 
 final class OpenapiPathBuilder
 {
@@ -14,24 +15,42 @@ final class OpenapiPathBuilder
     protected Collection $attributes;
 
     /**
+     * Route defintion instance.
+     *
+     * @var \Illuminate\Routing\Route
+     */
+    protected Route $route;
+
+    /**
      * Class instance.
      *
      * @param array $attributes
      */
-    public function __construct(array $attributes = [])
+    public function __construct(Route $route, array $attributes = [])
     {
+        $this->route = $route;
+
         $this->attributes = Collection::make($attributes);
+
+        $this->anotations();
     }
 
     /**
-     * Add description tag.
+     * Generate description, responses anotations.
      *
-     * @param  string $description
-     * @return $this
+     * @return void
      */
-    public function description(string $description): OpenapiPathBuilder
+    protected function anotations(): void
     {
-        return $this->put('description', $description);
+        ['controller' => $action] = $this->route->getAction();
+
+        [$controller, $method] = explode('@', $action);
+
+        $reflection = new LaravelControllerReflection($controller);
+
+        $description = $reflection->descriptionFor($method);
+
+        $this->put('description', $description);
     }
 
     /**

@@ -106,7 +106,7 @@ final class OpenapiGenerator
      */
     public function buildPathDefinition(string $uri, Route $route): PathDefinition
     {
-        $builder = $this->pathBuilder();
+        $builder = $this->pathBuilder($route);
 
         // Assign parameters based on Laravel route definnition.
         if ($parameters = $this->parameters($uri)) {
@@ -173,12 +173,12 @@ final class OpenapiGenerator
     /**
      * Create a new instance of the Openapi path builder.
      *
+     * @param  \Illuminate\Routing\Route $route
      * @return \OpenapiGenerator\OpenapiGeneratorBuilder
      */
-    public function pathBuilder(): OpenapiPathBuilder
+    public function pathBuilder(Route $route): OpenapiPathBuilder
     {
-        return (new OpenapiPathBuilder)
-            ->description('Hello world')
+        return (new OpenapiPathBuilder($route))
             ->response(200, [
                 'description' => 'Work in progress'
             ]);
