@@ -43,6 +43,8 @@ final class OpenapiPathBuilder
     protected function anotations(): void
     {
         ['controller' => $action] = $this->route->getAction();
+        
+        $action .= '@__invoke';
 
         [$controller, $method] = explode('@', $action);
 
