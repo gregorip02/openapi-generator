@@ -1,17 +1,28 @@
 <?php
 
-namespace OpenapiGenerator;
+namespace OpenapiGenerator\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use OpenapiGenerator\OpenapiGenerator;
 use Symfony\Component\Yaml\Yaml;
 
 final class OpenapiGeneratorCommand extends Command
 {
+    /**
+     * Laravel router instance.
+     *
+     * @var \Illuminate\Routing\Router
+     */
     protected Router $router;
 
+    /**
+     * Class instance.
+     *
+     * @param Illuminate\Routing\Router $router
+     */
     public function __construct(Router $router)
     {
         parent::__construct();
@@ -54,9 +65,10 @@ final class OpenapiGeneratorCommand extends Command
     }
 
     /**
-     * [puttemplates description]
-     * @param  string     $content       [description]
-     * @param  Collection $configuration [description]
+     * Create the final OpenAPI file and return its path.
+     *
+     * @param  string     $content
+     * @param  \Illuminate\Support\Collection $configuration
      * @return string
      */
     protected function putContents(string $content, Collection $configuration): string
@@ -69,8 +81,9 @@ final class OpenapiGeneratorCommand extends Command
     }
 
     /**
-     * [packageConfig description]
-     * @return [type] [description]
+     * Returns a collection with the configuration for the package.
+     *
+     * @return \Illuminate\Support\Collection
      */
     protected function packageConfig(): Collection
     {

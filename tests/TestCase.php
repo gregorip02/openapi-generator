@@ -6,7 +6,13 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
 {
-    protected function getPackageProviders($app)
+    /**
+     * Get package providers.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return array
+     */
+    protected function getPackageProviders($app): array
     {
         return [
             TestProvider::class
@@ -18,7 +24,7 @@ class TestCase extends BaseTestCase
      *
      * @return string
      */
-    protected function getBasePath()
+    protected function getBasePath(): string
     {
         return __DIR__ . '/laravel';
     }

@@ -2,10 +2,10 @@
 
 namespace OpenapiGenerator;
 
-use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
+use Illuminate\Routing\Route;
 
-final class OpenapiBuilder
+final class OpenapiPathBuilder
 {
     /**
      * Builder collection attributes.
@@ -15,7 +15,7 @@ final class OpenapiBuilder
     protected Collection $attributes;
 
     /**
-     * Route instance.
+     * Route defintion instance.
      *
      * @var \Illuminate\Routing\Route
      */
@@ -31,30 +31,43 @@ final class OpenapiBuilder
         $this->route = $route;
 
         $this->attributes = Collection::make($attributes);
+
+        $this->anotations();
     }
 
     /**
-     * Add description tag.
+     * Generate description, responses anotations.
      *
-     * @param  string $description
-     * @return $this
+     * @return void
      */
-    public function description(string $description): OpenapiBuilder
+    protected function anotations(): void
     {
-        return $this->put('description', $description);
+        ['controller' => $action] = $this->route->getAction();
+
+        [$controller, $method] = explode('@', $action);
+
+        $reflection = new LaravelControllerReflection($controller);
+
+        $description = $reflection->descriptionFor($method);
+
+        $this->put('description', $description);
     }
 
     /**
-     * Add tag name.
+     * Add tagname.
      *
-     * @param  string $tag
+     * @param  string $tagname
      * @return $this
      */
-    public function tag(string $tag): OpenapiBuilder
+    public function tagname(string $tagname): OpenapiPathBuilder
     {
-        $tags = $this->attributes->get('tags', []);
+        $tags = $this->get('tags', []);
 
-        $tags[] = strtolower(explode('/', $tag)[0]);
+        $tagname = strtolower(explode('/', $tagname)[0]);
+
+        if (! in_array($tagname, $tags)) {
+            $tags[] = $tagname;
+        }
 
         return $this->put('tags', $tags);
     }
@@ -66,9 +79,9 @@ final class OpenapiBuilder
      * @param  array $attributes
      * @return $this
      */
-    public function response(int $code, array $attributes): OpenapiBuilder
+    public function response(int $code, array $attributes): OpenapiPathBuilder
     {
-        $responses = $this->attributes->get('responses', []);
+        $responses = $this->get('responses', []);
 
         $responses[$code] = $attributes;
 
@@ -82,11 +95,23 @@ final class OpenapiBuilder
      * @param mixed $data
      * @return $this
      */
-    public function put(string $key, $data): OpenapiBuilder
+    public function put(string $key, $data): OpenapiPathBuilder
     {
         $this->attributes->put($key, $data);
 
         return $this;
+    }
+
+    /**
+     * Get an item from the collection by key.
+     *
+     * @param  mixed  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function get(string $key, $default = null)
+    {
+        return $this->attributes->get($key, $default);
     }
 
     /**
@@ -95,18 +120,19 @@ final class OpenapiBuilder
      * @param  array  $parameters
      * @return $this
      */
-    public function parameters(array $parameters): OpenapiBuilder
+    public function parameters(array $parameters): OpenapiPathBuilder
     {
-        $builderParameters = $this->attributes->get('parameters', []);
+        $builderParameters = $this->get('parameters', []);
 
         $builderParameterNames = array_filter($builderParameters, function ($parameterDefinition) {
             return $parameterDefinition['name'];
         });
 
+        /** @var string $parameter */
         foreach ($parameters as $parameter) {
             if (! in_array($parameter, $builderParameterNames)) {
                 $builderParameters[] = [
-                    'description' => 'Hello world',
+                    'description' => sprintf('%s identifier', $parameter),
                     'name' => $parameter,
                     'required' => true,
                     'in' => 'path',

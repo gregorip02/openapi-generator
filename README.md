@@ -17,9 +17,15 @@ composer require gregorip02/openapi-generator
 
 ## Usage
 
+Publish the package configuration file.
+
 ``` php
-// Usage description here
+php artisan vendor:publish --provider="OpenapiGenerator\OpenapiGeneratorServiceProvider"
 ```
+
+Now, you can define the configuration of your template in the `config/openapi-generator.php` file
+
+> **Remember** The entire structure of your template must follow the [OpenAPI specification](http://spec.openapis.org/oas/v3.0.3#schema).
 
 ### Testing
 

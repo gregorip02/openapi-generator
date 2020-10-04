@@ -5,6 +5,7 @@ namespace OpenapiGenerator;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
+use OpenapiGenerator\Agreements\PathDefinition;
 // use ReflectionClass;
 
 final class OpenapiGenerator
@@ -17,9 +18,9 @@ final class OpenapiGenerator
     protected array $template;
 
     /**
-     * Router instance.
+     * Laravel router instance.
      *
-     * @var \Symfony\Component\Routing\Router
+     * @var \Illuminate\Routing\Router
      */
     protected Router $router;
 
@@ -79,30 +80,46 @@ final class OpenapiGenerator
     {
         $routeCollection = $this->router->getRoutes();
 
-        $paths = ['paths' => []];
+        $paths = [];
 
         /** @var \Illuminate\Routing\Route $route **/
         foreach ($routeCollection->getRoutesByName() as $route) {
-            if ($this->wildcard($route->uri)) {
-                $method = $this->method($route);
+            $uri = '/' . Str::of($route->uri)->ltrim('/');
 
-                $builder = $this->createBuilder($route);
+            // We build path definition for wildcards routes.
+            if ($this->wildcard($uri)) {
+                $path = $this->buildPathDefinition($uri, $route);
 
-                $uri = '/' . Str::of($route->uri)->ltrim('/');
-
-                if ($parameters = $this->parameters($uri)) {
-                    $builder->parameters($parameters);
-                }
-
-                if ($tagname = preg_replace('/^\/api\//', '', $uri)) {
-                    $builder->tag($tagname);
-                }
-
-                $paths['paths'][$uri][$method] = $builder->toArray();
+                $paths[$path->uri][$path->method] = $path->toArray();
             }
         }
 
-        return $paths;
+        return compact('paths');
+    }
+
+    /**
+     * Create a path builder.
+     *
+     * @param  string $uri
+     * @param  \Illuminate\Routin\Route $route
+     * @return \OpenapiGenerator\Agreements\PathDefinition
+     */
+    public function buildPathDefinition(string $uri, Route $route): PathDefinition
+    {
+        $builder = $this->pathBuilder($route);
+
+        // Assign parameters based on Laravel route definnition.
+        if ($parameters = $this->parameters($uri)) {
+            $builder->parameters($parameters);
+        }
+
+        // Assign a tagname for the uri only if do not starts with /api/*
+        // We rely on resource/actions behavior for generic tags names
+        if ($tagname = preg_replace('/^\/api\//', '', $uri)) {
+            $builder->tagname($tagname);
+        }
+
+        return new PathDefinition($uri, $this->method($route), $builder);
     }
 
     /**
@@ -124,7 +141,7 @@ final class OpenapiGenerator
     }
 
     /**
-    public function response(OpenapiBuilder &$builder, Route $route): void
+    public function response(OpenapiPathBuilder &$builder, Route $route): void
     {
         if ($route->getActionName() == 'Closure') {
             return;
@@ -154,22 +171,21 @@ final class OpenapiGenerator
     } **/
 
     /**
-     * Create a new instance of the Openapi builder.
+     * Create a new instance of the Openapi path builder.
      *
      * @param  \Illuminate\Routing\Route $route
      * @return \OpenapiGenerator\OpenapiGeneratorBuilder
      */
-    public function createBuilder(Route $route): OpenapiBuilder
+    public function pathBuilder(Route $route): OpenapiPathBuilder
     {
-        return (new OpenapiBuilder($route))
-            ->description('Hello world')
+        return (new OpenapiPathBuilder($route))
             ->response(200, [
                 'description' => 'Work in progress'
             ]);
     }
 
     /**
-     * Get uri parameters
+     * Get uri parameters based on Laravel route definition.
      *
      * @param  string $uri
      * @return array

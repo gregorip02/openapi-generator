@@ -13,4 +13,12 @@ final class GeneratorCommandTest extends TestCase
 
         $command->assertExitCode(0);
     }
+
+    /** @test can handle php artisan openapi:generate */
+    public function handle_artisan_openapi_schema_command(): void
+    {
+        $command = $this->artisan('openapi:schema', ['name' => 'PetSchema']);
+
+        $command->assertExitCode(0);
+    }
 }
