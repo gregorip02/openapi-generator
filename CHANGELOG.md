@@ -7,6 +7,7 @@ All notable changes to `openapi-generator` will be documented in this file.
 - Add basic description based on PHPDocs
 - Update dependencies
 - Wildcards for generate docs for especific group of routes
+- Run Github Actions when change important files
 
 ## 0.0.1 2020-10-01
 
