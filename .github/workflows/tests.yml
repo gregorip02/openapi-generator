@@ -2,7 +2,17 @@ name: Tests
 
 on:
     push:
+        paths: 
+            - 'src/**'
+            - 'stubs/**'
+            - 'config/**'
+            - 'tests/**'
     pull_request:
+        paths:
+            - 'src/**'
+            - 'stubs/**'
+            - 'config/**'
+            - 'tests/**'
 
 jobs:
     tests:
