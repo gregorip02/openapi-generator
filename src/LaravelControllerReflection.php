@@ -32,8 +32,8 @@ final class LaravelControllerReflection
      */
     public function descriptionFor(string $methodName): string
     {
-        $default = sprintf('Please provide PHPDocs for %s method.', $methodName);
-
+        $default = 'Please provide PHPDocs for this path.';
+        
         if (! $this->controller->hasMethod($methodName)) {
             return $default;
         }
