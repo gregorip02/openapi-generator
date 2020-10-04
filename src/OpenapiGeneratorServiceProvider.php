@@ -3,6 +3,8 @@
 namespace OpenapiGenerator;
 
 use Illuminate\Support\ServiceProvider;
+use OpenapiGenerator\Commands\OpenapiGeneratorCommand;
+use OpenapiGenerator\Commands\OpenapiSchemaCommand;
 
 class OpenapiGeneratorServiceProvider extends ServiceProvider
 {
@@ -26,7 +28,8 @@ class OpenapiGeneratorServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'openapi-generator');
 
         $this->commands([
-            OpenapiGeneratorCommand::class
+            OpenapiGeneratorCommand::class,
+            OpenapiSchemaCommand::class
         ]);
     }
 }

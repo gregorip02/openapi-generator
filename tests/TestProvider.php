@@ -2,7 +2,8 @@
 
 namespace OpenapiGenerator\Tests;
 
-use OpenapiGenerator\OpenapiGeneratorCommand;
+use OpenapiGenerator\Commands\OpenapiGeneratorCommand;
+use OpenapiGenerator\Commands\OpenapiSchemaCommand;
 use OpenapiGenerator\OpenapiGeneratorServiceProvider;
 
 class TestProvider extends OpenapiGeneratorServiceProvider
@@ -22,10 +23,11 @@ class TestProvider extends OpenapiGeneratorServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/laravel/config.php', 'openapi-generator');
+        $this->mergeConfigFrom(__DIR__ . '/laravel/config.php', 'openapi-generator');
 
         $this->commands([
-            OpenapiGeneratorCommand::class
+            OpenapiGeneratorCommand::class,
+            OpenapiSchemaCommand::class
         ]);
     }
 }

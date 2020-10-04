@@ -18,9 +18,9 @@ final class OpenapiGenerator
     protected array $template;
 
     /**
-     * Router instance.
+     * Laravel router instance.
      *
-     * @var \Symfony\Component\Routing\Router
+     * @var \Illuminate\Routing\Router
      */
     protected Router $router;
 
