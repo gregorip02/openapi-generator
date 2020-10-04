@@ -2,6 +2,10 @@
 
 All notable changes to `openapi-generator` will be documented in this file.
 
+## 0.0.7 2020-10-04
+
+- Bugfix with __invoke controllers
+
 ## 0.0.6 2020-10-04
 
 - Add basic description based on PHPDocs
