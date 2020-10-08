@@ -27,15 +27,12 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
-
-            - name: Setup PHP with pecl extension
-              uses: shivammathur/setup-php@v2
+              
+            - name: Setup PHP Action
+              uses: shivammathur/setup-php@2.6.0
               with:
                 php-version: ${{ matrix.php }}
                 tools: pecl, composer
-
-            - name: Setup YAML extension
-              run: pecl install yaml
 
             - name: Validate composer files
               run: composer validate
