@@ -35,7 +35,7 @@ jobs:
                 tools: pecl, composer
 
             - name: Install Laravel
-              run: composer create-project laravel/laravel ${{ matrix.laravel }} petstore
+              run: composer create-project laravel/laravel petstore ^${{ matrix.laravel }}
 
             - name: Cache dependencies
               uses: actions/cache@v1
