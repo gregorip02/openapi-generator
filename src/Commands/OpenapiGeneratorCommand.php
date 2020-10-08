@@ -5,7 +5,9 @@ namespace OpenapiGenerator\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use OpenapiGenerator\OpenapiGenerator;
+use Symfony\Component\Yaml\Yaml;
 
 final class OpenapiGeneratorCommand extends Command
 {
@@ -73,7 +75,12 @@ final class OpenapiGeneratorCommand extends Command
     {
         $outputpath = $configuration->get('outputpath');
 
-        yaml_emit_file($outputpath, $content, YAML_UTF8_ENCODING);
+        # Returns the YAML representation of a value
+        $fileContents = function_exists('yaml_emit')
+            ? yaml_emit($content, YAML_UTF8_ENCODING)
+            : Yaml::dump($content, 2);
+
+        File::replace($outputpath, $fileContents);
 
         return $outputpath;
     }

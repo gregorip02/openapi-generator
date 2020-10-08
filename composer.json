@@ -17,12 +17,12 @@
         }
     ],
     "require": {
-        "php": "^7.3",
-        "ext-yaml": "*",
+        "php": ">=7.3",
         "goldspecdigital/oooas": "^2.8",
-        "illuminate/console": "^8.0",
-        "illuminate/routing": "^8.0",
-        "illuminate/support": "^8.0"
+        "illuminate/console": "^7.0|^8.0",
+        "illuminate/routing": "^7.0|^8.0",
+        "illuminate/support": "^7.0|^8.0",
+        "symfony/yaml": "^5.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
@@ -39,6 +39,9 @@
             "OpenapiGenerator\\Tests\\Src\\": "tests/src/",
             "OpenapiGenerator\\Tests\\App\\": "tests/laravel/app/"
         }
+    },
+    "suggest": {
+        "ext-yaml": "A human-readable output of the YAML document."
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
