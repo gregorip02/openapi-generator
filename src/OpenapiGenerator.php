@@ -15,14 +15,14 @@ final class OpenapiGenerator
      *
      * @var array
      */
-    protected array $template;
+    protected $template;
 
     /**
      * Laravel router instance.
      *
      * @var \Illuminate\Routing\Router
      */
-    protected Router $router;
+    protected $router;
 
     /**
      * Class instance.

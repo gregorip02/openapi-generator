@@ -10,9 +10,9 @@ final class LaravelControllerReflection
     /**
      * Reflection controller instance.
      *
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
-    public ReflectionClass $controller;
+    public $controller;
 
     /**
      * Class instance.
@@ -33,7 +33,7 @@ final class LaravelControllerReflection
     public function descriptionFor(string $methodName): string
     {
         $default = 'Please provide PHPDocs for this path.';
-        
+
         if (! $this->controller->hasMethod($methodName)) {
             return $default;
         }

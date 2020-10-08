@@ -14,7 +14,7 @@ final class OpenapiGeneratorCommand extends Command
      *
      * @var \Illuminate\Routing\Router
      */
-    protected Router $router;
+    protected $router;
 
     /**
      * Class instance.
