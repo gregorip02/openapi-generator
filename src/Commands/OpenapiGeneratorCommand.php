@@ -5,9 +5,7 @@ namespace OpenapiGenerator\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
 use OpenapiGenerator\OpenapiGenerator;
-use Symfony\Component\Yaml\Yaml;
 
 final class OpenapiGeneratorCommand extends Command
 {

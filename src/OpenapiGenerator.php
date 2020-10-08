@@ -134,7 +134,9 @@ final class OpenapiGenerator
 
         $passess = array_filter(
             $wildcards,
-            fn ($wildcard) => preg_match($wildcard, $uri)
+            function ($wildcard) use ($uri) {
+                return preg_match($wildcard, $uri);
+            }
         );
 
         return count($passess);
@@ -197,7 +199,9 @@ final class OpenapiGenerator
         $matches = \Illuminate\Support\Arr::flatten($matches);
 
         return array_map(
-            fn ($match) => preg_replace('/\{|\}/i', '', $match),
+            function ($match) {
+                return preg_replace('/\{|\}/i', '', $match);
+            },
             $matches
         );
     }
