@@ -11,7 +11,7 @@ final class PathDefinition implements Arrayable
 
     public $method;
 
-    public OpenapiPathBuilder $builder;
+    public $builder;
 
     public function __construct(string $uri, string $method, OpenapiPathBuilder $builder)
     {
