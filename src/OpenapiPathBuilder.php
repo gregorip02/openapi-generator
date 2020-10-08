@@ -10,16 +10,16 @@ final class OpenapiPathBuilder
     /**
      * Builder collection attributes.
      *
-     * @var Collection
+     * @var \Illuminate\Support\Collection
      */
-    protected Collection $attributes;
+    protected $attributes;
 
     /**
      * Route defintion instance.
      *
      * @var \Illuminate\Routing\Route
      */
-    protected Route $route;
+    protected $route;
 
     /**
      * Class instance.
@@ -43,7 +43,7 @@ final class OpenapiPathBuilder
     protected function anotations(): void
     {
         ['controller' => $action] = $this->route->getAction();
-        
+
         $action .= '@__invoke';
 
         [$controller, $method] = explode('@', $action);

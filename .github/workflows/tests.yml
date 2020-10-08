@@ -2,14 +2,16 @@ name: Tests
 
 on:
     push:
-        paths: 
+        paths:
             - 'src/**'
+            - '.github/**'
             - 'stubs/**'
             - 'config/**'
             - 'tests/**'
     pull_request:
         paths:
             - 'src/**'
+            - '.github/**'
             - 'stubs/**'
             - 'config/**'
             - 'tests/**'
@@ -24,11 +26,15 @@ jobs:
                 os: [ubuntu-latest]
 
         name: PHP${{ matrix.php }} on ${{ matrix.os }}
-        container:
-            image: composer:2.0.0-alpha3
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
+
+            - name: Setup PHP Action
+              uses: shivammathur/setup-php@2.6.0
+              with:
+                php-version: ${{ matrix.php }}
+                tools: pecl, composer
 
             - name: Validate composer files
               run: composer validate
@@ -48,5 +54,5 @@ jobs:
             - name: Upload OpenAPI documentation as artifact
               uses: actions/upload-artifact@v2
               with:
-                name: Openapi
+                name: Openapi Document
                 path: tests/laravel/resources/openapi.yml

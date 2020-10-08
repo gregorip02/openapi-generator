@@ -5,8 +5,13 @@ use OpenapiGenerator\Tests\App\Http\Controllers\AboutController;
 use OpenapiGenerator\Tests\App\Http\Controllers\PetController;
 
 /** Should be ignored because are closures */
-Route::get('/', fn () => 'Hello world!');
-Route::get('/contact', fn () => 'Please contact me');
+Route::get('/', function () {
+    return 'Hello world!';
+});
+
+Route::get('/contact', function () {
+    return 'Please contact me';
+});
 
 /** Should be included because they pass the wild card. */
 Route::group(['prefix' => 'api'], function () {
