@@ -55,7 +55,7 @@ final class OpenapiGeneratorCommand extends Command
 
         $template = $configuration->get('template');
 
-        $content = Yaml::dump(OpenapiGenerator::make($template, $this->router), 2);
+        $content = OpenapiGenerator::make($template, $this->router);
 
         $outputpath = $this->putContents($content, $configuration);
 
@@ -67,15 +67,15 @@ final class OpenapiGeneratorCommand extends Command
     /**
      * Create the final OpenAPI file and return its path.
      *
-     * @param  string     $content
+     * @param  array $content
      * @param  \Illuminate\Support\Collection $configuration
      * @return string
      */
-    protected function putContents(string $content, Collection $configuration): string
+    protected function putContents(array $content, Collection $configuration): string
     {
         $outputpath = $configuration->get('outputpath');
 
-        File::replace($outputpath, $content);
+        yaml_emit_file($outputpath, $content, YAML_UTF8_ENCODING);
 
         return $outputpath;
     }

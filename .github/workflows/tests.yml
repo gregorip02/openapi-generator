@@ -2,7 +2,7 @@ name: Tests
 
 on:
     push:
-        paths: 
+        paths:
             - 'src/**'
             - 'stubs/**'
             - 'config/**'
@@ -20,15 +20,22 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.3, 7.4]
+                php: [7.3, 7.4, 8.0]
                 os: [ubuntu-latest]
 
         name: PHP${{ matrix.php }} on ${{ matrix.os }}
-        container:
-            image: composer:2.0.0-alpha3
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
+
+            - name: Setup PHP with pecl extension
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: ${{ matrix.php }}
+                tools: pecl, composer
+
+            - name: Setup YAML extension
+              run: pecl install yaml
 
             - name: Validate composer files
               run: composer validate
@@ -48,5 +55,5 @@ jobs:
             - name: Upload OpenAPI documentation as artifact
               uses: actions/upload-artifact@v2
               with:
-                name: Openapi
+                name: Openapi Document
                 path: tests/laravel/resources/openapi.yml
