@@ -57,10 +57,12 @@ final class LaravelControllerReflection
      */
     public function responsesFor(string $methodName): array
     {
+        $default = [
+            '200' => Response::ok()->description('Please provide response type')
+        ];
+
         if (! $this->controller->hasMethod($methodName)) {
-            return [
-                '200' => Response::ok()->description('Please provide response type')
-            ];
+            return $default;
         }
 
         $method = $this->controller->getMethod($methodName);
@@ -76,5 +78,7 @@ final class LaravelControllerReflection
                 return call_user_func([$responseClassName, 'document']);
             }
         }
+
+        return $default;
     }
 }
