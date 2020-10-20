@@ -28,7 +28,7 @@ final class OpenapiSchemaCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\\Openapi\\Components\\Schemas';
+        return $rootNamespace . '\\Openapi\\Schemas';
     }
 
     /**

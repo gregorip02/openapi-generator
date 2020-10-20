@@ -4,8 +4,8 @@ namespace OpenapiGenerator\Tests\App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use OpenapiGenerator\Agreements\OpenapiDocument;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
-use OpenapiGenerator\Tests\App\Openapi\Components\Responses\PetListResponse;
+use OpenapiGenerator\Components\Responses\UnprocessableEntityResponse;
+use OpenapiGenerator\Tests\App\Openapi\Responses\PetListResponse;
 
 final class PetResourceCollection extends ResourceCollection implements OpenapiDocument
 {
@@ -32,7 +32,8 @@ final class PetResourceCollection extends ResourceCollection implements OpenapiD
     public static function document(): array
     {
         return [
-            '200' => new PetListResponse
+            '200' => new PetListResponse,
+            '422' => new UnprocessableEntityResponse
         ];
     }
 }

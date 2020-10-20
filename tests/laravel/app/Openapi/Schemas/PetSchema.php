@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenapiGenerator\Tests\App\Openapi\Components\Schemas;
+namespace OpenapiGenerator\Tests\App\Openapi\Schemas;
 
 use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;

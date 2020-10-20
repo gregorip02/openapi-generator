@@ -28,7 +28,7 @@ final class OpenapiResponseCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\\Openapi\\Components\\Responses';
+        return $rootNamespace . '\\Openapi\\Responses';
     }
 
     /**
