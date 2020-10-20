@@ -8,5 +8,8 @@ abstract class ResponseDefinition
 {
     abstract public static function response(): Response;
 
-    abstract public function toArray(): array;
+    public function toArray(): array
+    {
+        return (new static)->response()->toArray();
+    }
 }
