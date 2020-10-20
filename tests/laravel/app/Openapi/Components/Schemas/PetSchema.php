@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenapiGenerator\Tests\App\Openapi\Schemas;
+namespace OpenapiGenerator\Tests\App\Openapi\Components\Schemas;
 
 use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
@@ -10,7 +10,7 @@ class PetSchema extends SchemaDefinition
 {
     public function properties(): SchemaContract
     {
-        return Schema::object('Pet')
+        return Schema::object()
            ->required('id', 'name')
            ->properties(
                Schema::integer('id')->format(Schema::FORMAT_INT32),

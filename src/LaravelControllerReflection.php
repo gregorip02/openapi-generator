@@ -3,7 +3,10 @@
 namespace OpenapiGenerator;
 
 use ReflectionClass;
+use ReflectionNamedType;
 use Illuminate\Support\Arr;
+use OpenapiGenerator\Agreements\OpenapiDocument;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 
 final class LaravelControllerReflection
 {
@@ -45,5 +48,33 @@ final class LaravelControllerReflection
         $explode = explode('@', $comment);
 
         return trim(Arr::first($explode, null, $default));
+    }
+
+    /**
+     * [returnTypeFor description]
+     * @param  string $methodName [description]
+     * @return array
+     */
+    public function responsesFor(string $methodName): array
+    {
+        if (! $this->controller->hasMethod($methodName)) {
+            return [
+                '200' => Response::ok()->description('Please provide response type')
+            ];
+        }
+
+        $method = $this->controller->getMethod($methodName);
+
+        $return = $method->getReturnType();
+
+        if ($return instanceof ReflectionNamedType) {
+            $responseClassName = $return->getName();
+
+            $response = new ReflectionClass($responseClassName);
+
+            if ($response->implementsInterface(OpenapiDocument::class)) {
+                return call_user_func([$responseClassName, 'document']);
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace OpenapiGenerator\Tests;
 
 use OpenapiGenerator\Commands\OpenapiGeneratorCommand;
+use OpenapiGenerator\Commands\OpenapiResponseCommand;
 use OpenapiGenerator\Commands\OpenapiSchemaCommand;
 use OpenapiGenerator\OpenapiGeneratorServiceProvider;
 
@@ -27,7 +28,8 @@ class TestProvider extends OpenapiGeneratorServiceProvider
 
         $this->commands([
             OpenapiGeneratorCommand::class,
-            OpenapiSchemaCommand::class
+            OpenapiSchemaCommand::class,
+            OpenapiResponseCommand::class
         ]);
     }
 }

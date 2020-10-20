@@ -2,11 +2,13 @@
 
 namespace OpenapiGenerator;
 
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
-use OpenapiGenerator\Agreements\PathDefinition;
-// use ReflectionClass;
+use OpenapiGenerator\LaravelControllerReflection;
 
 final class OpenapiGenerator
 {
@@ -35,16 +37,6 @@ final class OpenapiGenerator
         $this->template = $template;
 
         $this->router = $router;
-    }
-
-    /**
-     * Get the current OpenAPI template.
-     *
-     * @return array
-     */
-    public function template(): array
-    {
-        return $this->template;
     }
 
     /**
@@ -86,11 +78,10 @@ final class OpenapiGenerator
         foreach ($routeCollection->getRoutesByName() as $route) {
             $uri = '/' . Str::of($route->uri)->ltrim('/');
 
-            // We build path definition for wildcards routes.
             if ($this->wildcard($uri)) {
                 $path = $this->buildPathDefinition($uri, $route);
 
-                $paths[$path->uri][$path->method] = $path->toArray();
+                $paths[$uri][$this->method($route)] = $path;
             }
         }
 
@@ -102,24 +93,47 @@ final class OpenapiGenerator
      *
      * @param  string $uri
      * @param  \Illuminate\Routin\Route $route
-     * @return \OpenapiGenerator\Agreements\PathDefinition
+     * @return array
      */
-    public function buildPathDefinition(string $uri, Route $route): PathDefinition
+    public function buildPathDefinition(string $uri, Route $route): array
     {
-        $builder = $this->pathBuilder($route);
+        [$controller, $method] = $this->action($route);
+
+        $reflectionController = new LaravelControllerReflection($controller);
+
+        $description = $reflectionController->descriptionFor($method);
 
         // Assign parameters based on Laravel route definnition.
-        if ($parameters = $this->parameters($uri)) {
-            $builder->parameters($parameters);
-        }
+        $parameters = $this->parameters($uri);
+
+        $path = PathItem::create()
+            ->route($uri)
+            ->parameters(...$parameters)
+            ->description($description)
+            ->toArray();
 
         // Assign a tagname for the uri only if do not starts with /api/*
         // We rely on resource/actions behavior for generic tags names
         if ($tagname = preg_replace('/^\/api\//', '', $uri)) {
-            $builder->tagname($tagname);
+            $path['tags'] = [explode('/', $tagname)[0]];
         }
 
-        return new PathDefinition($uri, $this->method($route), $builder);
+        $responses = $reflectionController->responsesFor($method);
+
+        foreach ($responses as $code => $response) {
+            $path['responses'][$code] = $response->toArray();
+        }
+
+        return $path;
+    }
+
+    protected function action(Route $route): array
+    {
+        ['controller' => $action] = $route->getAction();
+
+        $action .= '@__invoke';
+
+        return array_slice(explode('@', $action), 0, 2);
     }
 
     /**
@@ -143,50 +157,6 @@ final class OpenapiGenerator
     }
 
     /**
-    public function response(OpenapiPathBuilder &$builder, Route $route): void
-    {
-        if ($route->getActionName() == 'Closure') {
-            return;
-        }
-
-        $method = $route->getActionMethod();
-
-        $controller = $route->getController();
-
-        if (method_exists($controller, $method)) {
-            $ctlReflection = (new ReflectionClass($controller))->getMethod($method);
-
-            if ($classname = optional($ctlReflection->getReturnType())->getName()) {
-                $resReflection = new ReflectionClass($classname);
-
-                if (Str::endsWith($resReflection->getName(), 'Collection')) {
-                    $defaultCollectionProperties = $resReflection->getDefaultProperties();
-
-                    if (class_exists($defaultCollectionProperties['collects'])) {
-                        $resReflection = new ReflectionClass(
-                            $defaultCollectionProperties['collects']
-                        );
-                    }
-                }
-            }
-        }
-    } **/
-
-    /**
-     * Create a new instance of the Openapi path builder.
-     *
-     * @param  \Illuminate\Routing\Route $route
-     * @return \OpenapiGenerator\OpenapiGeneratorBuilder
-     */
-    public function pathBuilder(Route $route): OpenapiPathBuilder
-    {
-        return (new OpenapiPathBuilder($route))
-            ->response(200, [
-                'description' => 'Work in progress'
-            ]);
-    }
-
-    /**
      * Get uri parameters based on Laravel route definition.
      *
      * @param  string $uri
@@ -198,12 +168,15 @@ final class OpenapiGenerator
 
         $matches = \Illuminate\Support\Arr::flatten($matches);
 
-        return array_map(
-            function ($match) {
-                return preg_replace('/\{|\}/i', '', $match);
-            },
-            $matches
-        );
+        return array_map(function ($match) {
+            $name =  preg_replace('/\{|\}/i', '', $match);
+
+            return Parameter::path()
+                ->name($name)
+                ->required()
+                ->description("{$name} route name")
+                ->schema(Schema::integer());
+        }, $matches);
     }
 
     /**

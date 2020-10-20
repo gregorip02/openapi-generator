@@ -76,6 +76,6 @@ return [
                 'name' => 'API Support',
                 'email' => 'support@petstore.com',
             ],
-        ],
+        ]
     ]
 ];

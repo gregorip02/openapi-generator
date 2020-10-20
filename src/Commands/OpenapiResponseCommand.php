@@ -4,21 +4,21 @@ namespace OpenapiGenerator\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
-final class OpenapiSchemaCommand extends GeneratorCommand
+final class OpenapiResponseCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'openapi:schema';
+    protected $name = 'openapi:response';
 
     /**
      * The console command description.
      *
      * @var string|null
      */
-    protected $description = 'Generate OpenAPI schema class.';
+    protected $description = 'Generate OpenAPI response class.';
 
     /**
      * Get the default namespace for the class.
@@ -28,7 +28,7 @@ final class OpenapiSchemaCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\\Openapi\\Components\\Schemas';
+        return $rootNamespace . '\\Openapi\\Components\\Responses';
     }
 
     /**
@@ -38,6 +38,6 @@ final class OpenapiSchemaCommand extends GeneratorCommand
      */
     public function getStub()
     {
-        return __DIR__ . '/../../stubs/schema.stub';
+        return __DIR__ . '/../../stubs/response.stub';
     }
 }
