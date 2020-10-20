@@ -72,10 +72,12 @@ final class LaravelControllerReflection
         if ($return instanceof ReflectionNamedType) {
             $responseClassName = $return->getName();
 
-            $response = new ReflectionClass($responseClassName);
+            if (class_exists($responseClassName)) {
+                $response = new ReflectionClass($responseClassName);
 
-            if ($response->implementsInterface(OpenapiDocument::class)) {
-                return call_user_func([$responseClassName, 'document']);
+                if ($response->implementsInterface(OpenapiDocument::class)) {
+                    return call_user_func([$responseClassName, 'document']);
+                }
             }
         }
 
