@@ -4,6 +4,7 @@ namespace OpenapiGenerator;
 
 use Illuminate\Support\ServiceProvider;
 use OpenapiGenerator\Commands\OpenapiGeneratorCommand;
+use OpenapiGenerator\Commands\OpenapiResponseCommand;
 use OpenapiGenerator\Commands\OpenapiSchemaCommand;
 
 class OpenapiGeneratorServiceProvider extends ServiceProvider
@@ -29,7 +30,8 @@ class OpenapiGeneratorServiceProvider extends ServiceProvider
 
         $this->commands([
             OpenapiGeneratorCommand::class,
-            OpenapiSchemaCommand::class
+            OpenapiSchemaCommand::class,
+            OpenapiResponseCommand::class
         ]);
     }
 }

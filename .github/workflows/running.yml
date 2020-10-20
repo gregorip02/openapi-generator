@@ -1,0 +1,54 @@
+name: Tests
+
+on:
+    push:
+        paths:
+            - 'src/**'
+            - '.github/**'
+            - 'stubs/**'
+            - 'config/**'
+            - 'tests/**'
+    pull_request:
+        paths:
+            - 'src/**'
+            - '.github/**'
+            - 'stubs/**'
+            - 'config/**'
+            - 'tests/**'
+
+jobs:
+    running:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [7.3, 7.4]
+                laravel: [7, 8]
+                os: [ubuntu-latest]
+
+        name: PHP${{ matrix.php }} on ${{ matrix.os }} with Laravel ${{ matrix.laravel }}
+        steps:
+            - name: Setup PHP Action
+              uses: shivammathur/setup-php@2.6.0
+              with:
+                php-version: ${{ matrix.php }}
+                tools: pecl, composer
+
+            - name: Install Laravel
+              run: composer create-project laravel/laravel petstore ^${{ matrix.laravel }}
+
+            - name: Cache dependencies
+              uses: actions/cache@v1
+              with:
+                path: ~/.composer/cache/files
+                key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+            - name: Install package
+              run: composer --working-dir=petstore require gregorip02/openapi-generator
+
+            - name: Publish package providers
+              run: |
+                php petstore/artisan vendor:publish --provider="OpenapiGenerator\OpenapiGeneratorServiceProvider"
+
+            - name: Generate OpenAPI Document
+              run: php petstore/artisan openapi:generate

@@ -3,8 +3,9 @@
 namespace OpenapiGenerator\Tests\App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenapiGenerator\Agreements\OpenapiDocument;
 
-final class PetResource extends JsonResource
+final class PetResource extends JsonResource implements OpenapiDocument
 {
     /**
      * Transform the resource into an array.
@@ -19,5 +20,10 @@ final class PetResource extends JsonResource
             'age' => 3,
             'name' => 'Little pet',
         ];
+    }
+
+    public static function document(): array
+    {
+        return [];
     }
 }
